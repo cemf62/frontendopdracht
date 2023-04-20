@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
+import './index.css';
+import SearchBar from './components/Searchbar';
+import MoviesContainer from './components/MoviesContainer';
+import MovieDetails from './components/MovieDetails';
+import SearchResults from './components/SearchResults';
 
 function App() {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className="flex justify-center mt-20">
+        <SearchBar onSearch={handleSearch} />
+      </div>
+      
+      <BrowserRouter>
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={<MoviesContainer searchQuery={searchQuery} />}
+          />
+          <Route path="/movie/:id" element={<MovieDetails />} />
+          <Route path="/search" element={<SearchResults />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
